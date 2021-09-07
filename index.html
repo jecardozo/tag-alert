@@ -1,1 +1,140 @@
-hello
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+  <title>Tags alert</title>
+</head>
+<body>
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <span class="fs-4">TAGS Alertas Seller Central</span>
+      </a>
+    </header>
+
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>Sumulador de tags</h2>
+          <p>Es un simulador de tags que permite recomendar un tag para las alertas</p>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Tipo</option>
+            <option value="1">Internal</option>
+            <option value="2">External</option>
+          </select>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Aplicacion</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Razon</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button">Ver tag</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-white bg-dark rounded-3">
+          <h2>Tag example</h2>
+          <p>X:EXT_item-search_TO</p>
+        </div>
+      </div>
+
+    </div>
+    <img src="assets/img/diagrama.jpg" class="img-thumbnail" alt="...">
+
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Definición
+        </h1>
+        <p class="col-md-8 fs-4">
+
+          La idea es definir un formato o nomenclatura para que sea utilizado a la hora de taguear las alertas de Opsgenie. El nombre deberá estar constituido por la siguiente fórmula:
+
+          X:EXT|INT_nombre-api_razón
+
+          donde:
+
+          EXT|INT|EXT_SV: Determina si la alerta es interna o externa (interna es un error en nuestro stack, externa es porque alguna api call que consumimos está fallando, el nombre de la api sólo aplica en los casos de EXTERNAL error).
+
+          nombre-api: Indicar el nombre de la API que falló. En el caso de que el error venga de alguna app graphQL, que es una especie de “pasamano” hacia otras APIs, si corresponde, podría indicarse opcionalmente cual es la API de fondo que falló. En esos casos se deberá indicar el camino hacia la API con el error (ejemplo X:EXT_supply-graphql->item-search_TO).
+
+          razón: motivo específico de la alerta, ejemplo un time out, etc...
+
+          Glosario de razones:
+          EXT:
+          TO: Time out
+          CB: Circuit Breaker
+          CC: Contract Change
+          RT: Response time
+          UE: Unknown error
+          TMR: Too many requests
+          TI: Traffic incremented (para casos donde el tráfico crece mucho de golpe)
+          SV: Afectación de algún servicio de Fury
+
+          INT:
+          TH: threadpool mal configurado.
+          PO: Pool de conexiones mal configurado.
+          CX: Conexión a algún recurso mal configurado (Ejemplo DB, etc).
+          SV: Servicio de fury con algún error (TO contra un KVS, etc). Para una mejor trazabilidad se podría indicar también de qué servicio se trata, y cuál fue el error.
+          NPE: null pointer exception
+          LB: errores en librerías utilizadas en nuestras aplicaciones (Library bug)
+          INFRA: errores propios del infra
+          LAG: Lag en BigQueue/Stream
+
+          Cada equipo puede sumar propuestas para extender el glosario, y hacer que los tags sean útiles para analizar las alertas, y resolver los problemas asociados a las mismas.
+
+
+          Caracteres reservados, keys:
+
+          X:   Inicio de descripción
+          _    Separación entre dos especificaciones
+          ->   Camino dentro de una especificación
+          -     Unión de expresiones dentro de una misma especificación
+
+          Ejemplos de tags:
+          X:EXT_item-search_TO
+          X:EXT_item-search_CB
+          X:INT_NPE
+          X:INT_TH
+          X:INT_SV->KVS_TO
+          X:INT_SV->KVS_TMR
+          X:EXT_vault_TO  (Error en servicios de KyC)
+          X:INTSV->I_NFRA_DEAD-INSTANCES
+          X:INT_DB->LOCK → errores producidos por degradación de las conexiones a BBDD
+          X:EXT_SV->KVS_TO
+
+
+        </p>
+      </div>
+    </div>
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+      &copy; Mercadolibre 2021
+    </footer>
+  </div>
+</main>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+-->
+</body>
+</html>
